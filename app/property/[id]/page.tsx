@@ -36,20 +36,28 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
               <span className="text-lg">{property.location}</span>
             </div>
 
-            <div className="flex items-center space-x-8 mb-8">
-              <div className="flex items-center space-x-2">
-                <Bed className="w-5 h-5 text-gray-500" />
-                <span className="font-semibold">{property.bedrooms} Bedrooms</span>
+            {(property.bedrooms || property.bathrooms || property.area) && (
+              <div className="flex items-center space-x-8 mb-8">
+                {property.bedrooms && (
+                  <div className="flex items-center space-x-2">
+                    <Bed className="w-5 h-5 text-gray-500" />
+                    <span className="font-semibold">{property.bedrooms} Bedrooms</span>
+                  </div>
+                )}
+                {property.bathrooms && (
+                  <div className="flex items-center space-x-2">
+                    <Bath className="w-5 h-5 text-gray-500" />
+                    <span className="font-semibold">{property.bathrooms} Bathrooms</span>
+                  </div>
+                )}
+                {property.area && (
+                  <div className="flex items-center space-x-2">
+                    <Square className="w-5 h-5 text-gray-500" />
+                    <span className="font-semibold">{property.area}</span>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center space-x-2">
-                <Bath className="w-5 h-5 text-gray-500" />
-                <span className="font-semibold">{property.bathrooms} Bathrooms</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Square className="w-5 h-5 text-gray-500" />
-                <span className="font-semibold">{property.area}</span>
-              </div>
-            </div>
+            )}
           </div>
 
           <div className="grid lg:grid-cols-3 gap-12">

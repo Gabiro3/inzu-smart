@@ -8,11 +8,11 @@ export type PropertyRecord = {
   id: string
   title: string
   location: string
-  price: number
+  price?: number | null
   currency?: string
-  bedrooms: number
-  bathrooms: number
-  area: string
+  bedrooms?: number | null
+  bathrooms?: number | null
+  area?: string | null
   category?: string | null
   description?: string | null
   thumbnail_url: string
@@ -25,11 +25,11 @@ export type Property = {
   id: string
   title: string
   location: string
-  price: number
+  price?: number
   priceLabel: string
-  bedrooms: number
-  bathrooms: number
-  area: string
+  bedrooms?: number
+  bathrooms?: number
+  area?: string
   category?: string
   description?: string
   image: string
