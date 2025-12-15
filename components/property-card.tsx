@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, MapPin } from "lucide-react"
 import type { Property } from "@/lib/types/property"
 
 interface PropertyCardProps {
@@ -37,12 +37,11 @@ export function PropertyCard({ property, index = 0 }: PropertyCardProps) {
               className="text-white transform transition-transform duration-500"
               style={{ transform: isHovered ? "translateY(0)" : "translateY(20px)" }}
             >
-              <h3 className="text-2xl font-bold mb-3">{property.title}</h3>
-              <p className="text-sm leading-relaxed mb-4 opacity-90">
-                {property.description ||
-                  "Experience elegance and comfort with our exclusive properties, designed for sophisticated living."}
-              </p>
-              <p className="text-lg font-semibold">{property.priceLabel}</p>
+              <h3 className="text-2xl font-bold mb-3 uppercase tracking-wide">{property.title}</h3>
+              <div className="flex items-center text-gray-300">
+                <MapPin className="w-4 h-4 mr-2" />
+                <span className="text-sm uppercase tracking-wide">{property.location}</span>
+              </div>
             </div>
           </div>
 

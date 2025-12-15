@@ -37,18 +37,18 @@ export function VerticalProjectsSection() {
   }, [])
 
   return (
-    <section className="pt-20 pb-12 px-16">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className="pt-20 pb-12 px-4 sm:px-8 md:px-16">
+      <div className="max-w-6xl mx-auto">
         {error && (
           <p className="mb-6 text-center text-sm text-red-500" role="alert">
             {error}
           </p>
         )}
 
-        <div className="space-y-0 py-24">
+        <div className="space-y-0 py-12 md:py-24">
           {isLoading
             ? Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="flex items-center justify-center py-32">
+                <div key={index} className="flex items-center justify-center py-16 md:py-32">
                   <PropertyCardSkeleton />
                 </div>
               ))

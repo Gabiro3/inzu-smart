@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Bricolage_Grotesque } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
+import { LanguageProvider } from "@/contexts/language-context"
 
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -33,8 +34,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bricolageGrotesque.variable} antialiased`}>
       <body className="font-sans">
-        {children}
-        <Toaster />
+        <LanguageProvider>
+          {children}
+          <Toaster />
+        </LanguageProvider>
       </body>
     </html>
   )

@@ -1,8 +1,8 @@
 export const COMPANY_INFO = {
   name: "INZU SMART",
   tagline: "Building smarter, living better.",
-  phone: "+1-212-456-789",
-  email: "hello@inzusmart.com",
+  phone: "+212781278990",
+  email: "inzu.smart@inzu.ma",
   calendlyLink: "https://calendar.app.google/SLtyEqciEQJu4MZH8",
   founded: "2024",
   locations: "Morocco, and Kigali, Rwanda",
@@ -12,12 +12,62 @@ export const COMPANY_INFO = {
   designPhilosophy: "Our design philosophy is rooted in simplicity, functionality, sustainability, and cultural relevance. We create spaces that respond to local climate, local materials, and community needs while integrating modern aesthetics and smart building strategies.",
 }
 
+export const SERVICES = [
+  {
+    id: "architecture",
+    name: "ARCHITECTURE",
+    slug: "architecture",
+    title: "Architecture",
+    description: "We help our clients who are unsure what to build or invest in architecturally by providing essential clarity and direction. Our role is to act as a strategic advisor, defining the highest and best use for their property or site. This involves conducting feasibility studies, defining the functional program, and mitigating potential risks before they commit to expensive design or construction phases. Ultimately, we ensure their architectural investment is well-defined, aligned with their goals, and set up for maximum success from day one.",
+    image: "/images/contrast_villa.jpg",
+  },
+  {
+    id: "engineering",
+    name: "ENGINEERING",
+    slug: "engineering",
+    title: "Engineering",
+    description: "We provide comprehensive engineering services that ensure your project is structurally sound, efficient, and compliant with all regulations. Our engineering team works closely with architects and contractors to deliver integrated solutions that optimize performance, sustainability, and cost-effectiveness throughout the entire construction process.",
+    image: "/images/golden_hour.jpg",
+  },
+  {
+    id: "consultancy",
+    name: "CONSULTANCY",
+    slug: "consultancy",
+    title: "Consultancy",
+    description: "We help our clients who are unsure what to build or invest in architecturally by providing essential clarity and direction. Our role is to act as a strategic advisor, defining the highest and best use for their property or site. This involves conducting feasibility studies, defining the functional program, and mitigating potential risks before they commit to expensive design or construction phases. Ultimately, we ensure their architectural investment is well-defined, aligned with their goals, and set up for maximum success from day one.",
+    image: "/images/sandstone_1.jpg",
+  },
+  {
+    id: "project-management",
+    name: "PROJECT MANAGEMENT",
+    slug: "project-management",
+    title: "Project Management",
+    description: "We oversee your entire construction project from conception to completion, ensuring timely delivery, budget adherence, and quality standards. Our project management team coordinates all stakeholders, manages schedules, tracks progress, and resolves issues proactively to keep your project on track and within budget.",
+    image: "/images/veranda_1.jpg",
+  },
+  {
+    id: "material-supply",
+    name: "MATERIAL SUPPLY",
+    slug: "material-supply",
+    title: "Material Supply",
+    description: "We also simplify and lower the costs of your entire construction process by managing the procurement and supply of construction materials directly. We bypass traditional, multi-layered suppliers and work straight with the producers and manufacturers. This strategy ensures you receive high-quality materials at the lowest possible prices because we eliminate the middlemen markups. This not only significantly reduces your project budget but also streamlines the timeline, guaranteeing materials are delivered when and where they are needed, making the construction process faster and easier.",
+    image: "/images/el_monolito_01.jpg",
+  },
+]
+
 export const NAVIGATION_ITEMS = [
-  { name: "Home", href: "/" },
-  { name: "About Us", href: "/about" },
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
-  { name: "Contact", href: "/contact" },
+  { name: "PROJECTS", href: "/projects" },
+  { name: "SERVICES", href: "/services" },
+  { name: "ABOUT", href: "/about" },
+  { name: "CONTACTS", href: "/contacts" },
+]
+
+export const SERVICE_NAV_ITEMS = [
+  { name: "ARCHITECTURE", href: "/services/architecture" },
+  { name: "ENGINEERING", href: "/services/engineering" },
+  { name: "CONSULTANCY", href: "/services/consultancy" },
+  { name: "PROJECT MANAGEMENT", href: "/services/project-management" },
+  { name: "MATERIAL SUPPLY", href: "/services/material-supply" },
 ]
 
 export const HERO_CONTENT = {
@@ -247,16 +297,17 @@ export const FAQ_ITEMS = [
 
 export const FOOTER_LINKS = {
   services: [
-    { name: "Architectural Design", href: "/projects?category=architectural-design" },
-    { name: "3D Modeling & Rendering", href: "/projects?category=3d-modeling" },
-    { name: "Smart Cost Estimation", href: "/projects?category=smart-estimation" },
-    { name: "Construction Consultation", href: "/projects?category=construction-consultation" },
+    { name: "Architecture", href: "/services/architecture" },
+    { name: "Engineering", href: "/services/engineering" },
+    { name: "Consultancy", href: "/services/consultancy" },
+    { name: "Project Management", href: "/services/project-management" },
+    { name: "Material Supply", href: "/services/material-supply" },
   ],
   company: [
     { name: "About Us", href: "/about" },
     { name: "Projects", href: "/projects" },
-    { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" },
+    { name: "Services", href: "/services" },
+    { name: "Contacts", href: "/contacts" },
   ],
   legal: [
     { name: "Terms & Conditions", href: "/terms" },

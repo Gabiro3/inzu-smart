@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 
 type ImageModalProps = {
   images: string[]
@@ -37,6 +37,9 @@ export function ImageModal({ images, currentIndex, onClose, onPrevious, onNext, 
   return (
     <Dialog open={currentIndex !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-7xl w-[95vw] h-[95vh] p-0 bg-black/95 border-none">
+        <DialogTitle className="sr-only">
+          {propertyTitle} - Image {currentIndex !== null ? currentIndex + 1 : 1}
+        </DialogTitle>
         <div className="relative w-full h-full flex items-center justify-center">
           <Button
             variant="ghost"

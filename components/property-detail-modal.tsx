@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { X, ChevronLeft, ChevronRight, Bed, Bath, Square, MapPin } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, MapPin } from "lucide-react"
 import type { Property } from "@/lib/types/property"
 
 interface PropertyDetailModalProps {
@@ -49,12 +49,10 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
       setCanScrollRight(container.scrollLeft < container.scrollWidth - container.clientWidth - 10)
     }
 
-    // Initial update with delay to ensure DOM is ready
     const timeout = setTimeout(updateScrollButtons, 100)
     container.addEventListener("scroll", updateScrollButtons)
     window.addEventListener("resize", updateScrollButtons)
 
-    // Keyboard navigation
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose()
@@ -126,68 +124,21 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
           }}
         >
           <div className="flex h-[90vh]">
-            {/* First Panel - Project Info */}
+            {/* First Panel - Property Info (Title and Location Only) */}
             <div className="min-w-full h-[90vh] flex items-center justify-center snap-start overflow-y-auto">
               <div className="container mx-auto px-4 md:px-8 py-8 md:py-16 max-w-4xl w-full">
                 <div className="text-white space-y-6 md:space-y-8">
                   <div>
-                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4">{property.title}</h2>
-                    <div className="flex items-center text-gray-300 mb-6">
+                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 uppercase tracking-wide">
+                      {property.title}
+                    </h2>
+                    <div className="flex items-center text-gray-300">
                       <MapPin className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                      <span className="text-base md:text-xl">{property.location}</span>
+                      <span className="text-base md:text-xl uppercase tracking-wide">
+                        {property.location}
+                      </span>
                     </div>
                   </div>
-
-                  {(property.bedrooms || property.bathrooms || property.area) && (
-                    <div className="grid grid-cols-3 gap-4 md:gap-8 mb-6 md:mb-8">
-                      {property.bedrooms && (
-                        <div className="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-2">
-                          <Bed className="w-5 h-5 md:w-6 md:h-6 text-gray-400" />
-                          <div>
-                            <p className="text-xl md:text-2xl font-bold">{property.bedrooms}</p>
-                            <p className="text-xs md:text-sm text-gray-400">Bedrooms</p>
-                          </div>
-                        </div>
-                      )}
-                      {property.bathrooms && (
-                        <div className="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-2">
-                          <Bath className="w-5 h-5 md:w-6 md:h-6 text-gray-400" />
-                          <div>
-                            <p className="text-xl md:text-2xl font-bold">{property.bathrooms}</p>
-                            <p className="text-xs md:text-sm text-gray-400">Bathrooms</p>
-                          </div>
-                        </div>
-                      )}
-                      {property.area && (
-                        <div className="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-2">
-                          <Square className="w-5 h-5 md:w-6 md:h-6 text-gray-400" />
-                          <div>
-                            <p className="text-xl md:text-2xl font-bold">{property.area}</p>
-                            <p className="text-xs md:text-sm text-gray-400">Area</p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  <div>
-                    <p className="text-2xl md:text-3xl font-bold mb-4">{property.priceLabel}</p>
-                    {property.description && (
-                      <p className="text-base md:text-lg text-gray-300 leading-relaxed max-w-2xl">{property.description}</p>
-                    )}
-                  </div>
-
-                  {property.features && property.features.length > 0 && (
-                    <div className="space-y-4 pt-6 md:pt-8 border-t border-white/20">
-                      <h3 className="text-xl md:text-2xl font-bold mb-4">Features</h3>
-                      {property.features.map((feature, index) => (
-                        <div key={index} className="space-y-1">
-                          <h4 className="text-lg md:text-xl font-semibold">{feature.title}</h4>
-                          <p className="text-sm md:text-base text-gray-400">{feature.description}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -214,4 +165,3 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
     </div>
   )
 }
-

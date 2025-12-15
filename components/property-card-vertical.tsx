@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react"
 import { PropertyDetailModal } from "./property-detail-modal"
 import type { Property } from "@/lib/types/property"
+import { useLanguage } from "@/contexts/language-context"
+import { translations } from "@/lib/i18n/translations"
 
 interface PropertyCardVerticalProps {
   property: Property
@@ -14,6 +16,8 @@ export function PropertyCardVertical({ property, index }: PropertyCardVerticalPr
   const [opacity, setOpacity] = useState(0.6)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+  const { language } = useLanguage()
+  const t = translations[language]
 
   useEffect(() => {
     let animationFrameId: number
@@ -74,7 +78,7 @@ export function PropertyCardVertical({ property, index }: PropertyCardVerticalPr
           opacity: opacity,
         }}
       >
-        <div className="w-full max-w-6xl mx-auto">
+        <div className="w-full max-w-6xl mx-auto" aria-label={`${property.title} • ${property.location} • ${t.projects.properties}`}>
         <div
   className="grid grid-cols-12 items-center gap-4 md:gap-2 lg:gap-4 cursor-pointer group"
   onClick={() => setIsModalOpen(true)}

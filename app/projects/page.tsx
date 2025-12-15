@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, Filter } from "lucide-react"
 import type { Property } from "@/lib/types/property"
+import { useLanguage } from "@/contexts/language-context"
+import { translations } from "@/lib/i18n/translations"
 
 export default function ProjectsPage() {
   const [properties, setProperties] = useState<Property[]>([])
@@ -17,6 +19,8 @@ export default function ProjectsPage() {
   const [priceRange, setPriceRange] = useState("all")
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { language } = useLanguage()
+  const t = translations[language]
 
   useEffect(() => {
     const controller = new AbortController()
@@ -52,51 +56,54 @@ export default function ProjectsPage() {
       const price = property.price
       const matchesPrice =
         priceRange === "all" ||
-        (priceRange === "under-500k" && price < 500000) ||
-        (priceRange === "500k-1m" && price >= 500000 && price < 1000000) ||
-        (priceRange === "over-1m" && price >= 1000000)
+        (price !== undefined &&
+          ((priceRange === "under-500k" && price < 500000) ||
+            (priceRange === "500k-1m" && price >= 500000 && price < 1000000) ||
+            (priceRange === "over-1m" && price >= 1000000)))
 
       return matchesSearch && matchesCategory && matchesPrice
     })
   }, [properties, searchTerm, selectedCategory, priceRange])
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
       <Navbar />
 
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-              <span>Properties</span>
+            <div className="inline-flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-full text-sm font-medium mb-4">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+              <span>{t.projects.properties}</span>
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4">Discover All Our Properties</h1>
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4 uppercase tracking-wide">
+              {t.projects.discoverAll}
+            </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Explore our complete collection of AI-designed real estate projects.
+              {t.projects.exploreCollection}
             </p>
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-12">
+          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-12">
             <div className="grid md:grid-cols-4 gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
-                  placeholder="Search properties..."
+                  placeholder={t.projects.searchPlaceholder}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 rounded-full"
+                  className="pl-10 rounded-none border-gray-300 focus:border-black focus:ring-black"
                 />
               </div>
 
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="px-4 py-2 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
               >
-                <option value="all">All Categories</option>
+                <option value="all">{t.projects.allCategories}</option>
                 <option value="villa">Villas</option>
                 <option value="apartment">Apartments</option>
                 <option value="residential">Residential</option>
@@ -105,17 +112,17 @@ export default function ProjectsPage() {
               <select
                 value={priceRange}
                 onChange={(e) => setPriceRange(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="px-4 py-2 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
               >
-                <option value="all">All Prices</option>
-                <option value="under-500k">Under $500K</option>
-                <option value="500k-1m">$500K - $1M</option>
-                <option value="over-1m">Over $1M</option>
+                <option value="all">{t.projects.allPrices}</option>
+                <option value="under-500k">{t.projects.under500k}</option>
+                <option value="500k-1m">{t.projects.priceRange500k1m}</option>
+                <option value="over-1m">{t.projects.over1m}</option>
               </select>
 
-              <Button className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full">
+              <Button className="bg-black hover:bg-gray-800 text-white rounded-none">
                 <Filter className="w-4 h-4 mr-2" />
-                Apply Filters
+                {t.projects.applyFilters}
               </Button>
             </div>
           </div>
@@ -123,7 +130,7 @@ export default function ProjectsPage() {
           {/* Results */}
           <div className="mb-8">
             <p className="text-gray-600">
-              Showing {filteredProperties.length} of {properties.length} properties
+              {t.projects.showing} {filteredProperties.length} {t.projects.of} {properties.length} {t.projects.propertiesCount}
             </p>
             {error && (
               <p className="text-sm text-red-500 mt-2" role="alert">
@@ -143,16 +150,16 @@ export default function ProjectsPage() {
 
           {!isLoading && filteredProperties.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">No properties found matching your criteria.</p>
+              <p className="text-gray-500 text-lg">{t.projects.noPropertiesFound}</p>
               <Button
                 onClick={() => {
                   setSearchTerm("")
                   setSelectedCategory("all")
                   setPriceRange("all")
                 }}
-                className="mt-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-8"
+                className="mt-4 bg-black hover:bg-gray-800 text-white rounded-none px-8"
               >
-                Clear Filters
+                {t.projects.clearFilters}
               </Button>
             </div>
           )}

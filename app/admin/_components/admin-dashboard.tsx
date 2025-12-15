@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react"
 import Image from "next/image"
-import { PlusCircle, Trash2, Eye, Edit, Home, List } from "lucide-react"
+import { PlusCircle, Trash2, Eye, Edit, Home, List, Building2, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -18,6 +18,8 @@ import { PropertyDetailView } from "./property-detail-view"
 import { PropertyEditForm } from "./property-edit-form"
 import { ImageModal } from "./image-modal"
 import { LogoutButton } from "./logout-button"
+import { ServicesAdmin } from "./services-admin"
+import { CompanyInfoAdmin } from "./company-info-admin"
 
 function CategorySelect({ name, required }: { name: string; required?: boolean }) {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]?.id || "")
@@ -46,7 +48,7 @@ type AdminDashboardProps = {
   adminEmail: string
 }
 
-type ViewMode = "properties" | "add"
+type ViewMode = "properties" | "add" | "services" | "company"
 
 export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboardProps) {
   const [properties, setProperties] = useState(initialProperties)
@@ -279,14 +281,19 @@ export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboard
         )}
       </div>
 
+        {viewMode === "services" && <ServicesAdmin />}
+
+        {viewMode === "company" && <CompanyInfoAdmin />}
+      </div>
+
       {/* Bottom Navbar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-around h-16">
+          <div className="flex items-center justify-around h-16 overflow-x-auto">
             <Button
               variant={viewMode === "properties" ? "default" : "ghost"}
               onClick={() => setViewMode("properties")}
-              className={`flex flex-col items-center gap-1 h-full rounded-none ${
+              className={`flex flex-col items-center gap-1 h-full rounded-none min-w-[80px] ${
                 viewMode === "properties" ? "bg-emerald-50 text-emerald-600" : ""
               }`}
             >
@@ -296,12 +303,32 @@ export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboard
             <Button
               variant={viewMode === "add" ? "default" : "ghost"}
               onClick={() => setViewMode("add")}
-              className={`flex flex-col items-center gap-1 h-full rounded-none ${
+              className={`flex flex-col items-center gap-1 h-full rounded-none min-w-[80px] ${
                 viewMode === "add" ? "bg-emerald-50 text-emerald-600" : ""
               }`}
             >
               <PlusCircle className="w-5 h-5" />
-              <span className="text-xs">Add Property</span>
+              <span className="text-xs">Add</span>
+            </Button>
+            <Button
+              variant={viewMode === "services" ? "default" : "ghost"}
+              onClick={() => setViewMode("services")}
+              className={`flex flex-col items-center gap-1 h-full rounded-none min-w-[80px] ${
+                viewMode === "services" ? "bg-emerald-50 text-emerald-600" : ""
+              }`}
+            >
+              <Building2 className="w-5 h-5" />
+              <span className="text-xs">Services</span>
+            </Button>
+            <Button
+              variant={viewMode === "company" ? "default" : "ghost"}
+              onClick={() => setViewMode("company")}
+              className={`flex flex-col items-center gap-1 h-full rounded-none min-w-[80px] ${
+                viewMode === "company" ? "bg-emerald-50 text-emerald-600" : ""
+              }`}
+            >
+              <Info className="w-5 h-5" />
+              <span className="text-xs">Company</span>
             </Button>
           </div>
         </div>
