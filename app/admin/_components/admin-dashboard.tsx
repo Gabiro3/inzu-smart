@@ -281,10 +281,9 @@ export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboard
         )}
       </div>
 
-        {viewMode === "services" && <ServicesAdmin />}
+      {viewMode === "services" && <ServicesAdmin />}
 
-        {viewMode === "company" && <CompanyInfoAdmin />}
-      </div>
+      {viewMode === "company" && <CompanyInfoAdmin />}
 
       {/* Bottom Navbar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
@@ -338,8 +337,9 @@ export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboard
       {selectedProperty && (
         <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
           <DialogContent className="max-w-7xl w-[95vw] max-h-[95vh] overflow-y-auto">
+            <DialogTitle className="sr-only">Property details</DialogTitle>
             <PropertyDetailView
-              property={selectedProperty}
+              property={selectedProperty!}
               onEdit={() => {
                 setIsDetailOpen(false)
                 setIsEditOpen(true)
@@ -379,7 +379,7 @@ export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboard
               setSelectedImageIndex((selectedImageIndex + 1) % allImages.length)
             }
           }}
-          propertyTitle={selectedProperty.title}
+          propertyTitle={selectedProperty!.title}
         />
       )}
 
@@ -387,8 +387,9 @@ export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboard
       {selectedProperty && (
         <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogTitle className="sr-only">Edit property</DialogTitle>
             <PropertyEditForm
-              property={selectedProperty}
+              property={selectedProperty!}
               onUpdate={handleUpdate}
               onCancel={() => {
                 setIsEditOpen(false)
