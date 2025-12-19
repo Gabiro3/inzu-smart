@@ -1,14 +1,14 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Bricolage_Grotesque } from "next/font/google"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
 import { LanguageProvider } from "@/contexts/language-context"
 
-const bricolageGrotesque = Bricolage_Grotesque({
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-bricolage",
+  variable: "--font-inter",
 })
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${bricolageGrotesque.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} antialiased`}>
       <body className="font-sans">
         <LanguageProvider>
           {children}

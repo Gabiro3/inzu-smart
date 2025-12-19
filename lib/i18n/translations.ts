@@ -56,6 +56,11 @@ export const translations = {
     common: {
       bookConsultation: "Book a Consultation",
     },
+    contacts: {
+      phone: "Phone",
+      email: "Email",
+      noContactInfo: "No contact information available.",
+    },
   },
   fr: {
     nav: {
@@ -111,6 +116,11 @@ export const translations = {
     },
     common: {
       bookConsultation: "Réserver une consultation",
+    },
+    contacts: {
+      phone: "Téléphone",
+      email: "E-mail",
+      noContactInfo: "Aucune information de contact disponible.",
     },
   },
 } as const

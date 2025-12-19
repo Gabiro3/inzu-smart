@@ -42,24 +42,27 @@ export function PropertyCarousel({ images, propertyTitle }: PropertyCarouselProp
 
   return (
     <>
-      <div className="space-y-4 mb-8">
+      <div className="space-y-6 mb-8">
         <Carousel className="w-full" setApi={setApi}>
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index} className="basis-full">
                 <div
-                  className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl cursor-pointer group"
+                  className="relative w-full overflow-hidden rounded-lg cursor-pointer group"
                   onClick={() => handleImageClick(index)}
                 >
-                  <Image
-                    src={image || "/placeholder.svg"}
-                    alt={`${propertyTitle} - Image ${index + 1}`}
-                    fill
-                    className="object-cover transition-transform group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 1200px"
-                  />
+                  <div className="relative w-full h-[70vh] min-h-[500px] md:min-h-[600px] lg:min-h-[700px]">
+                    <Image
+                      src={image || "/placeholder.svg"}
+                      alt={`${propertyTitle} - Image ${index + 1}`}
+                      fill
+                      className="object-contain transition-transform group-hover:scale-110"
+                      sizes="100vw"
+                      priority={index === 0}
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                    <p className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-medium">
+                    <p className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-medium text-lg">
                       Click to view full size
                     </p>
                   </div>
@@ -69,19 +72,19 @@ export function PropertyCarousel({ images, propertyTitle }: PropertyCarouselProp
           </CarouselContent>
           {images.length > 1 && (
             <>
-              <CarouselPrevious className="left-4" />
-              <CarouselNext className="right-4" />
+              <CarouselPrevious className="left-4 bg-white/90 hover:bg-white" />
+              <CarouselNext className="right-4 bg-white/90 hover:bg-white" />
             </>
           )}
         </Carousel>
 
         {/* Thumbnail Navigation */}
         {images.length > 1 && (
-          <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
+          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
             {images.map((image, index) => (
               <div
                 key={index}
-                className="relative aspect-square w-full overflow-hidden rounded-lg cursor-pointer border-2 border-transparent hover:border-emerald-500 transition-colors"
+                className="relative aspect-square w-full overflow-hidden rounded-lg cursor-pointer border-2 border-transparent hover:border-black transition-colors"
                 onClick={() => scrollToImage(index)}
               >
                 <Image

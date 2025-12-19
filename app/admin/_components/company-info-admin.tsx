@@ -6,27 +6,57 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { COMPANY_INFO } from "@/lib/constants"
 import { Save } from "lucide-react"
 import { toast } from "sonner"
+import { updateCompanyInfoAction } from "@/app/admin/company-actions"
+import type { CompanyInfo } from "@/lib/types/company"
 
-export function CompanyInfoAdmin() {
-  const [companyInfo, setCompanyInfo] = useState(COMPANY_INFO)
+interface CompanyInfoAdminProps {
+  initialData: CompanyInfo | null
+}
+
+export function CompanyInfoAdmin({ initialData }: CompanyInfoAdminProps) {
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(initialData)
   const [isPending, startTransition] = useTransition()
 
+  if (!companyInfo) {
+    return <div className="text-center text-gray-500 py-8">No company information found.</div>
+  }
+
   const handleChange = (field: string, value: string) => {
-    setCompanyInfo((prev) => ({ ...prev, [field]: value }))
+    setCompanyInfo((prev) => (prev ? { ...prev, [field]: value } : null))
   }
 
   const handleSave = () => {
+    if (!companyInfo) return
+
     startTransition(async () => {
-      // TODO: Implement API call to save company info
-      // For now, just show a success message
+      const formData = new FormData()
+      formData.append("name", companyInfo.name || "")
+      formData.append("tagline", companyInfo.tagline || "")
+      formData.append("phone", companyInfo.phone || "")
+      formData.append("email", companyInfo.email || "")
+      formData.append("calendlyLink", companyInfo.calendly_link || "")
+      formData.append("founded", companyInfo.founded || "")
+      formData.append("locations", companyInfo.locations || "")
+      formData.append("vision", companyInfo.vision || "")
+      formData.append("mission", companyInfo.mission || "")
+      formData.append("purpose", companyInfo.purpose || "")
+      formData.append("designPhilosophy", companyInfo.design_philosophy || "")
+
+      const result = await updateCompanyInfoAction(formData)
+
+      if (result?.error) {
+        toast.error(result.error)
+        return
+      }
+
       toast.success("Company information updated successfully")
-      // In a real implementation, you would:
-      // 1. Call an API endpoint to update the company info
-      // 2. Update the database
-      // 3. Revalidate the cache
+      
+      // Update local state with the returned data
+      if (result?.data) {
+        setCompanyInfo(result.data)
+      }
     })
   }
 
@@ -54,7 +84,7 @@ export function CompanyInfoAdmin() {
               <Label htmlFor="phone">Phone</Label>
               <Input
                 id="phone"
-                value={companyInfo.phone}
+                value={companyInfo.phone || ""}
                 onChange={(e) => handleChange("phone", e.target.value)}
               />
             </div>
@@ -63,7 +93,7 @@ export function CompanyInfoAdmin() {
               <Input
                 id="email"
                 type="email"
-                value={companyInfo.email}
+                value={companyInfo.email || ""}
                 onChange={(e) => handleChange("email", e.target.value)}
               />
             </div>
@@ -72,8 +102,8 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="calendlyLink">Calendly Link</Label>
             <Input
               id="calendlyLink"
-              value={companyInfo.calendlyLink}
-              onChange={(e) => handleChange("calendlyLink", e.target.value)}
+              value={companyInfo.calendly_link || ""}
+              onChange={(e) => handleChange("calendly_link", e.target.value)}
             />
           </div>
         </CardContent>
@@ -88,7 +118,7 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="name">Company Name</Label>
             <Input
               id="name"
-              value={companyInfo.name}
+              value={companyInfo.name || ""}
               onChange={(e) => handleChange("name", e.target.value)}
             />
           </div>
@@ -96,7 +126,7 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="tagline">Tagline</Label>
             <Input
               id="tagline"
-              value={companyInfo.tagline}
+              value={companyInfo.tagline || ""}
               onChange={(e) => handleChange("tagline", e.target.value)}
             />
           </div>
@@ -104,7 +134,7 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="locations">Locations</Label>
             <Input
               id="locations"
-              value={companyInfo.locations}
+              value={companyInfo.locations || ""}
               onChange={(e) => handleChange("locations", e.target.value)}
             />
           </div>
@@ -112,7 +142,7 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="founded">Founded</Label>
             <Input
               id="founded"
-              value={companyInfo.founded}
+              value={companyInfo.founded || ""}
               onChange={(e) => handleChange("founded", e.target.value)}
             />
           </div>
@@ -128,7 +158,7 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="purpose">Purpose</Label>
             <Textarea
               id="purpose"
-              value={companyInfo.purpose}
+              value={companyInfo.purpose || ""}
               onChange={(e) => handleChange("purpose", e.target.value)}
               rows={4}
             />
@@ -137,7 +167,7 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="mission">Mission</Label>
             <Textarea
               id="mission"
-              value={companyInfo.mission}
+              value={companyInfo.mission || ""}
               onChange={(e) => handleChange("mission", e.target.value)}
               rows={3}
             />
@@ -146,7 +176,7 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="vision">Vision</Label>
             <Textarea
               id="vision"
-              value={companyInfo.vision}
+              value={companyInfo.vision || ""}
               onChange={(e) => handleChange("vision", e.target.value)}
               rows={3}
             />
@@ -155,8 +185,8 @@ export function CompanyInfoAdmin() {
             <Label htmlFor="designPhilosophy">Design Philosophy</Label>
             <Textarea
               id="designPhilosophy"
-              value={companyInfo.designPhilosophy}
-              onChange={(e) => handleChange("designPhilosophy", e.target.value)}
+              value={companyInfo.design_philosophy || ""}
+              onChange={(e) => handleChange("design_philosophy", e.target.value)}
               rows={4}
             />
           </div>

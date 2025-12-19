@@ -50,18 +50,23 @@ const contactInfoSchema = z.object({
 // Company Info Actions
 export async function updateCompanyInfoAction(formData: FormData) {
   try {
+    const getValue = (key: string) => {
+      const value = formData.get(key)?.toString()
+      return value && value.trim() !== "" ? value : null
+    }
+
     const data = {
-      name: formData.get("name")?.toString(),
-      tagline: formData.get("tagline")?.toString() || null,
-      phone: formData.get("phone")?.toString() || null,
-      email: formData.get("email")?.toString() || null,
-      calendly_link: formData.get("calendlyLink")?.toString() || null,
-      founded: formData.get("founded")?.toString() || null,
-      locations: formData.get("locations")?.toString() || null,
-      vision: formData.get("vision")?.toString() || null,
-      mission: formData.get("mission")?.toString() || null,
-      purpose: formData.get("purpose")?.toString() || null,
-      design_philosophy: formData.get("designPhilosophy")?.toString() || null,
+      name: getValue("name") || undefined,
+      tagline: getValue("tagline"),
+      phone: getValue("phone"),
+      email: getValue("email"),
+      calendly_link: getValue("calendlyLink"),
+      founded: getValue("founded"),
+      locations: getValue("locations"),
+      vision: getValue("vision"),
+      mission: getValue("mission"),
+      purpose: getValue("purpose"),
+      design_philosophy: getValue("designPhilosophy"),
     }
 
     const parsed = companyInfoSchema.safeParse(data)

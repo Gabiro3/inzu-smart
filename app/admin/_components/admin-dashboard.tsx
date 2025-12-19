@@ -20,6 +20,7 @@ import { ImageModal } from "./image-modal"
 import { LogoutButton } from "./logout-button"
 import { ServicesAdmin } from "./services-admin"
 import { CompanyInfoAdmin } from "./company-info-admin"
+import type { CompanyInfo, Service } from "@/lib/types/company"
 
 function CategorySelect({ name, required }: { name: string; required?: boolean }) {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]?.id || "")
@@ -46,11 +47,13 @@ function CategorySelect({ name, required }: { name: string; required?: boolean }
 type AdminDashboardProps = {
   initialProperties: Property[]
   adminEmail: string
+  initialCompanyInfo: CompanyInfo | null
+  initialServices: Service[]
 }
 
 type ViewMode = "properties" | "add" | "services" | "company"
 
-export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboardProps) {
+export function AdminDashboard({ initialProperties, adminEmail, initialCompanyInfo, initialServices }: AdminDashboardProps) {
   const [properties, setProperties] = useState(initialProperties)
   const [isPending, startTransition] = useTransition()
   const [deletePendingId, setDeletePendingId] = useState<string | null>(null)
@@ -281,9 +284,9 @@ export function AdminDashboard({ initialProperties, adminEmail }: AdminDashboard
         )}
       </div>
 
-      {viewMode === "services" && <ServicesAdmin />}
+      {viewMode === "services" && <ServicesAdmin initialServices={initialServices} />}
 
-      {viewMode === "company" && <CompanyInfoAdmin />}
+      {viewMode === "company" && <CompanyInfoAdmin initialData={initialCompanyInfo} />}
 
       {/* Bottom Navbar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">

@@ -1,11 +1,20 @@
-"use client"
-
+import { Suspense } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { COMPANY_INFO } from "@/lib/constants"
-import { Phone, Mail } from "lucide-react"
+import { getContactInfo } from "@/lib/data/company"
+import { ContactsContent } from "./_components/contacts-content"
+import ContactsLoading from "./loading"
 
-export default function ContactsPage() {
+async function ContactsData() {
+  const contactInfo = await getContactInfo()
+  
+  const phones = contactInfo.filter((contact) => contact.type === "phone")
+  const emails = contactInfo.filter((contact) => contact.type === "email")
+
+  return <ContactsContent phones={phones} emails={emails} />
+}
+
+export default async function ContactsPage() {
   return (
     <main className="min-h-screen bg-white">
       <Navbar />
@@ -16,42 +25,13 @@ export default function ContactsPage() {
             Contacts
           </h1>
           
-          <div className="space-y-8">
-            <div className="flex items-start space-x-4">
-              <Phone className="w-5 h-5 text-gray-600 mt-1 flex-shrink-0" />
-              <div>
-                <p className="text-lg font-semibold mb-2">Phone</p>
-                <a 
-                  href={`tel:${COMPANY_INFO.phone}`}
-                  className="text-gray-700 hover:text-black transition-colors block"
-                >
-                  {COMPANY_INFO.phone}
-                </a>
-                <a 
-                  href={`tel:${COMPANY_INFO.phone}`}
-                  className="text-gray-700 hover:text-black transition-colors block"
-                >
-                  {COMPANY_INFO.phone}
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-4">
-              <Mail className="w-5 h-5 text-gray-600 mt-1 flex-shrink-0" />
-              <div>
-                <p className="text-lg font-semibold mb-2">Email</p>
-                <a 
-                  href={`mailto:${COMPANY_INFO.email}`}
-                  className="text-gray-700 hover:text-black transition-colors"
-                >
-                  {COMPANY_INFO.email}
-                </a>
-              </div>
-            </div>
-          </div>
+          <Suspense fallback={<ContactsLoading />}>
+            <ContactsData />
+          </Suspense>
         </div>
       </div>
 
+      <Footer />
     </main>
   )
 }

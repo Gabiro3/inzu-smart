@@ -6,13 +6,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { SERVICES } from "@/lib/constants"
 import { Edit, Save, X } from "lucide-react"
 import { toast } from "sonner"
+import { updateServiceAction } from "@/app/admin/company-actions"
+import type { Service } from "@/lib/types/company"
 
-export function ServicesAdmin() {
+interface ServicesAdminProps {
+  initialServices: Service[]
+}
+
+export function ServicesAdmin({ initialServices }: ServicesAdminProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [editedServices, setEditedServices] = useState(SERVICES)
+  const [editedServices, setEditedServices] = useState(initialServices)
   const [isPending, startTransition] = useTransition()
 
   const handleEdit = (id: string) => {
@@ -21,19 +26,37 @@ export function ServicesAdmin() {
 
   const handleCancel = () => {
     setEditingId(null)
-    setEditedServices(SERVICES)
+    setEditedServices(initialServices)
   }
 
   const handleSave = (id: string) => {
+    const service = editedServices.find((s) => s.id === id)
+    if (!service) return
+
     startTransition(async () => {
-      // TODO: Implement API call to save service
-      // For now, just show a success message
+      const formData = new FormData()
+      formData.append("slug", service.slug)
+      formData.append("name", service.name)
+      formData.append("title", service.title)
+      formData.append("description", service.description)
+      formData.append("image", service.image || "")
+      formData.append("display_order", service.display_order.toString())
+      formData.append("is_active", service.is_active.toString())
+
+      const result = await updateServiceAction(id, formData)
+
+      if (result?.error) {
+        toast.error(result.error)
+        return
+      }
+
       toast.success("Service updated successfully")
       setEditingId(null)
-      // In a real implementation, you would:
-      // 1. Call an API endpoint to update the service
-      // 2. Update the database
-      // 3. Revalidate the cache
+      
+      // Update local state with the returned data
+      if (result?.data) {
+        setEditedServices((prev) => prev.map((s) => (s.id === id ? result.data : s)))
+      }
     })
   }
 
@@ -46,7 +69,7 @@ export function ServicesAdmin() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Services ({SERVICES.length})</h2>
+        <h2 className="text-2xl font-semibold">Services ({editedServices.length})</h2>
         <p className="text-sm text-gray-500">Manage your company services</p>
       </div>
 
