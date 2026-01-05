@@ -53,63 +53,87 @@ export function PropertyDetailView({ property, onEdit, onDelete, onImageClick }:
           </div>
         </div>
 
-        {/* Image Carousel */}
-        {allImages.length > 0 && (
-          <div className="space-y-4">
-            <Carousel className="w-full" setApi={setApi}>
-              <CarouselContent>
-                {allImages.map((image, index) => (
-                  <CarouselItem key={index} className="basis-full">
-                    <div
-                      className="relative h-96 w-full overflow-hidden rounded-2xl cursor-pointer group"
-                      onClick={() => handleImageClick(index)}
-                    >
-                      <Image
-                        src={image || "/placeholder.svg"}
-                        alt={`${property.title} - Image ${index + 1}`}
-                        fill
-                        className="object-cover transition-transform group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 1200px"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                        <p className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-medium">
-                          Click to view full size
-                        </p>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              {allImages.length > 1 && (
-                <>
-                  <CarouselPrevious className="left-4" />
-                  <CarouselNext className="right-4" />
-                </>
-              )}
-            </Carousel>
-
-            {/* Thumbnail Navigation */}
-            {allImages.length > 1 && (
-              <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
-                {allImages.map((image, index) => (
-                  <div
-                    key={index}
-                    className="relative h-20 w-full overflow-hidden rounded-lg cursor-pointer border-2 border-transparent hover:border-emerald-500 transition-colors"
-                    onClick={() => scrollToImage(index)}
-                  >
-                    <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`${property.title} - Thumbnail ${index + 1}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 25vw, 150px"
-                    />
-                  </div>
-                ))}
+        {/* Hero Slideable Carousel */}
+{allImages.length > 0 && (
+  <div className="w-full">
+    <Carousel
+      setApi={setApi}
+      className="w-full"
+      opts={{ align: "start" }}
+    >
+      <CarouselContent>
+        {allImages.map((image, index) => (
+          <CarouselItem key={index} className="basis-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+              
+              {/* Image */}
+              <div
+                className="relative h-[320px] lg:h-[460px] w-full overflow-hidden rounded-2xl cursor-pointer group"
+                onClick={() => handleImageClick(index)}
+              >
+                <Image
+                  src={image || "/placeholder.svg"}
+                  alt={`${property.title} - Image ${index + 1}`}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
               </div>
-            )}
-          </div>
-        )}
+
+              {/* Description / Meta */}
+              <div className="flex flex-col justify-between p-2 lg:p-6">
+                <div>
+                  <h3 className="text-2xl font-semibold mb-3">
+                    {property.title}
+                  </h3>
+
+                  <div className="flex items-center gap-2 text-gray-600 mb-4">
+                    <MapPin className="w-4 h-4" />
+                    <span>{property.location}</span>
+                  </div>
+
+                  <p className="text-gray-600 leading-relaxed line-clamp-6">
+                    {property.description || "No description available."}
+                  </p>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 gap-4 mt-6">
+                  <div className="flex items-center gap-2">
+                    <Bed className="w-5 h-5 text-gray-500" />
+                    <span className="font-medium">{property.bedrooms} Beds</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Bath className="w-5 h-5 text-gray-500" />
+                    <span className="font-medium">{property.bathrooms} Baths</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Car className="w-5 h-5 text-gray-500" />
+                    <span className="font-medium">{property.area}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-gray-500" />
+                    <span className="font-semibold">{property.priceLabel}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+
+      {allImages.length > 1 && (
+        <>
+          <CarouselPrevious className="-left-6" />
+          <CarouselNext className="-right-6" />
+        </>
+      )}
+    </Carousel>
+  </div>
+)}
+
 
         {/* Property Details */}
         <div className="grid md:grid-cols-2 gap-6">
@@ -117,13 +141,6 @@ export function PropertyDetailView({ property, onEdit, onDelete, onImageClick }:
           <div>
             <h3 className="text-xl font-semibold mb-4">Property Details</h3>
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <DollarSign className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">Price</p>
-                  <p className="font-semibold">{property.priceLabel}</p>
-                </div>
-              </div>
               <div className="flex items-center gap-3">
                 <Bed className="w-5 h-5 text-gray-500" />
                 <div>

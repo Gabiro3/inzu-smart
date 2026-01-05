@@ -176,10 +176,6 @@ export function AdminDashboard({ initialProperties, adminEmail, initialCompanyIn
 
                 <div className="grid md:grid-cols-4 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="price">Price (USD)</Label>
-                    <Input id="price" name="price" type="number" min={0} step="1000" placeholder="1650000" required />
-                  </div>
-                  <div className="space-y-2">
                     <Label htmlFor="bedrooms">Bedrooms</Label>
                     <Input id="bedrooms" name="bedrooms" type="number" min={0} placeholder="4" required />
                   </div>
@@ -239,7 +235,6 @@ export function AdminDashboard({ initialProperties, adminEmail, initialCompanyIn
                     <div>
                       <h3 className="text-xl font-semibold">{property.title}</h3>
                       <p className="text-gray-600">{property.location}</p>
-                      <p className="mt-2 font-medium">{property.priceLabel}</p>
                       <p className="text-sm text-gray-500">
                         {property.bedrooms} bd • {property.bathrooms} ba • {property.area}
                       </p>

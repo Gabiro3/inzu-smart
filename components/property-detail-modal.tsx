@@ -14,6 +14,7 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+  const imageWrapperRef = useRef<HTMLDivElement>(null)
 
   const scroll = (direction: "left" | "right") => {
     const container = scrollContainerRef.current
@@ -143,22 +144,87 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
               </div>
             </div>
 
-            {/* Image Panels */}
-            {images.map((image, index) => (
-              <div key={index} className="min-w-full h-[90vh] flex items-center justify-center snap-start">
-                <div className="w-full h-full flex items-center justify-center p-4 md:p-8 lg:p-12">
-                  <img
-                    src={image || "/placeholder.svg"}
-                    alt={`${property.title} - Image ${index + 1}`}
-                    className="w-auto h-auto max-w-[95vw] max-h-[85vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 hover:scale-105"
-                    style={{
-                      maxWidth: "min(95vw, 1600px)",
-                      maxHeight: "85vh",
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+            {/* Image Panels with Description */}
+{images.map((image, index) => (
+  <div
+    key={index}
+    className="min-w-full h-[90vh] snap-start flex items-center justify-center"
+  >
+    <div className="w-full h-full grid grid-cols-1 lg:grid-cols-2 gap-6 items-center px-4 md:px-8 lg:px-16">
+
+      {/* Image */}
+      <div
+  ref={imageWrapperRef}
+  className="relative flex items-center justify-center group cursor-zoom-in"
+  onClick={() => {
+    const el = imageWrapperRef.current
+    if (!el) return
+
+    if (el.requestFullscreen) {
+      el.requestFullscreen()
+    } else if ((el as any).webkitRequestFullscreen) {
+      ;(el as any).webkitRequestFullscreen()
+    } else if ((el as any).msRequestFullscreen) {
+      ;(el as any).msRequestFullscreen()
+    }
+  }}
+>
+  {/* Image */}
+  <img
+    src={image || "/placeholder.svg"}
+    alt={`${property.title} - Image ${index + 1}`}
+    className="object-contain rounded-2xl shadow-2xl"
+    style={{
+      maxWidth: "100%",
+      maxHeight: "92vh", // 🔥 bigger but still safe
+    }}
+  />
+</div>
+
+
+      {/* Description */}
+      <div className="text-white max-w-xl mx-auto lg:mx-0 space-y-6">
+        <div>
+          <h3 className="text-2xl md:text-3xl font-semibold mb-2">
+            {property.title}
+          </h3>
+          <div className="flex items-center text-gray-300">
+            <MapPin className="w-4 h-4 mr-2" />
+            <span>{property.location}</span>
+          </div>
+        </div>
+
+        <p className="text-gray-300 leading-relaxed text-base md:text-lg">
+          {property.description || "No description available."}
+        </p>
+
+        {/* Optional meta info */}
+        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
+          {property.bedrooms && (
+            <div>
+              <p className="text-sm text-gray-400">Bedrooms</p>
+              <p className="font-semibold">{property.bedrooms}</p>
+            </div>
+          )}
+          {property.bathrooms && (
+            <div>
+              <p className="text-sm text-gray-400">Bathrooms</p>
+              <p className="font-semibold">{property.bathrooms}</p>
+            </div>
+          )}
+          {property.area && (
+            <div>
+              <p className="text-sm text-gray-400">Area</p>
+              <p className="font-semibold">{property.area}</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+    </div>
+  </div>
+))}
+
           </div>
         </div>
       </div>

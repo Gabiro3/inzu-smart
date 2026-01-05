@@ -88,15 +88,6 @@ export default function ProjectsPage() {
           {/* Filters */}
           <div className="bg-white border border-gray-200 rounded-lg p-6 mb-12">
             <div className="grid md:grid-cols-4 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <Input
-                  placeholder={t.projects.searchPlaceholder}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 rounded-none border-gray-300 focus:border-black focus:ring-black"
-                />
-              </div>
 
               <select
                 value={selectedCategory}
@@ -107,17 +98,6 @@ export default function ProjectsPage() {
                 <option value="villa">Villas</option>
                 <option value="apartment">Apartments</option>
                 <option value="residential">Residential</option>
-              </select>
-
-              <select
-                value={priceRange}
-                onChange={(e) => setPriceRange(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
-              >
-                <option value="all">{t.projects.allPrices}</option>
-                <option value="under-500k">{t.projects.under500k}</option>
-                <option value="500k-1m">{t.projects.priceRange500k1m}</option>
-                <option value="over-1m">{t.projects.over1m}</option>
               </select>
 
               <Button className="bg-black hover:bg-gray-800 text-white rounded-none">

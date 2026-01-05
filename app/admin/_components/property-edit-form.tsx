@@ -49,18 +49,6 @@ export function PropertyEditForm({ property, onUpdate, onCancel, isPending }: Pr
 
         <div className="grid md:grid-cols-4 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="edit-price">Price (USD)</Label>
-            <Input
-              id="edit-price"
-              name="price"
-              type="number"
-              min={0}
-              step="1000"
-              defaultValue={property.price}
-              required
-            />
-          </div>
-          <div className="space-y-2">
             <Label htmlFor="edit-bedrooms">Bedrooms</Label>
             <Input
               id="edit-bedrooms"
