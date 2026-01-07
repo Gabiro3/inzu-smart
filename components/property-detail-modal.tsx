@@ -145,85 +145,95 @@ export function PropertyDetailModal({ property, isOpen, onClose }: PropertyDetai
             </div>
 
             {/* Image Panels with Description */}
-{images.map((image, index) => (
-  <div
-    key={index}
-    className="min-w-full h-[90vh] snap-start flex items-center justify-center"
-  >
-    <div className="w-full h-full grid grid-cols-1 lg:grid-cols-2 gap-6 items-center px-4 md:px-8 lg:px-16">
-
-      {/* Image */}
-      <div
-  ref={imageWrapperRef}
-  className="relative flex items-center justify-center group cursor-zoom-in"
-  onClick={() => {
-    const el = imageWrapperRef.current
-    if (!el) return
-
-    if (el.requestFullscreen) {
-      el.requestFullscreen()
-    } else if ((el as any).webkitRequestFullscreen) {
-      ;(el as any).webkitRequestFullscreen()
-    } else if ((el as any).msRequestFullscreen) {
-      ;(el as any).msRequestFullscreen()
-    }
-  }}
+            {images.map((image, index) => (
+              <div
+  key={index}
+  className="min-w-full h-[90vh] snap-start"
 >
-  {/* Image */}
-  <img
-    src={image || "/placeholder.svg"}
-    alt={`${property.title} - Image ${index + 1}`}
-    className="object-contain rounded-2xl shadow-2xl"
-    style={{
-      maxWidth: "100%",
-      maxHeight: "92vh", // 🔥 bigger but still safe
-    }}
-  />
-</div>
+  <div className="w-full h-full grid grid-cols-1 lg:grid-cols-[6.5fr_3.5fr] gap-6 px-4 md:px-8 lg:px-16">
 
+    {/* IMAGE (65%) */}
+    <div
+      ref={imageWrapperRef}
+      className="relative h-full w-full overflow-hidden rounded-2xl bg-black cursor-zoom-in"
+      onClick={() => {
+        const el = imageWrapperRef.current
+        if (!el) return
+        el.requestFullscreen?.()
+      }}
+    >
+      <img
+        src={image || "/placeholder.svg"}
+        alt={`${property.title} - Image ${index + 1}`}
+        className="
+          w-full
+          h-full
+          object-cover
+          scale-[1.03]
+          transition-transform
+          duration-700
+          ease-out
+        "
+      />
 
-      {/* Description */}
-      <div className="text-white max-w-xl mx-auto lg:mx-0 space-y-6">
-        <div>
-          <h3 className="text-2xl md:text-3xl font-semibold mb-2">
-            {property.title}
-          </h3>
-          <div className="flex items-center text-gray-300">
-            <MapPin className="w-4 h-4 mr-2" />
-            <span>{property.location}</span>
-          </div>
-        </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/10 pointer-events-none" />
+    </div>
 
-        <p className="text-gray-300 leading-relaxed text-base md:text-lg">
-          {property.description || "No description available."}
-        </p>
-
-        {/* Optional meta info */}
-        <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
-          {property.bedrooms && (
-            <div>
-              <p className="text-sm text-gray-400">Bedrooms</p>
-              <p className="font-semibold">{property.bedrooms}</p>
-            </div>
-          )}
-          {property.bathrooms && (
-            <div>
-              <p className="text-sm text-gray-400">Bathrooms</p>
-              <p className="font-semibold">{property.bathrooms}</p>
-            </div>
-          )}
-          {property.area && (
-            <div>
-              <p className="text-sm text-gray-400">Area</p>
-              <p className="font-semibold">{property.area}</p>
-            </div>
-          )}
+    {/* DESCRIPTION (35%) */}
+    <div
+      className="
+        h-full
+        flex
+        flex-col
+        justify-center
+        text-white
+        space-y-4
+        lg:pl-6
+        overflow-y-auto
+        scrollbar-thin-modern
+      "
+    >
+      <div className="max-w-md space-y-1">
+        <h3 className="text-xl md:text-2xl font-semibold">
+          {property.title}
+        </h3>
+        <div className="flex items-center text-gray-300 text-sm">
+          <MapPin className="w-4 h-4 mr-2" />
+          <span>{property.location}</span>
         </div>
       </div>
 
+      <p className="text-gray-300 leading-relaxed text-sm md:text-base max-w-md">
+        {property.description || "No description available."}
+      </p>
+
+      <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/10 max-w-md">
+        {property.bedrooms && (
+          <div>
+            <p className="text-xs text-gray-400">Bedrooms</p>
+            <p className="font-semibold text-sm">{property.bedrooms}</p>
+          </div>
+        )}
+        {property.bathrooms && (
+          <div>
+            <p className="text-xs text-gray-400">Bathrooms</p>
+            <p className="font-semibold text-sm">{property.bathrooms}</p>
+          </div>
+        )}
+        {property.area && (
+          <div>
+            <p className="text-xs text-gray-400">Area</p>
+            <p className="font-semibold text-sm">{property.area}</p>
+          </div>
+        )}
+      </div>
     </div>
+
   </div>
-))}
+</div>
+
+
+            ))}
 
           </div>
         </div>
