@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { PropertyCardVertical } from "./property-card-vertical"
-import { PropertyCardSkeleton } from "./property-card-skeleton"
+import { SplashScreen } from "./property-card-skeleton"
 import type { Property } from "@/lib/types/property"
 
 export function VerticalProjectsSection() {
@@ -49,7 +49,7 @@ export function VerticalProjectsSection() {
           {isLoading
             ? Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex items-center justify-center py-16 md:py-32">
-                  <PropertyCardSkeleton />
+                  <SplashScreen />
                 </div>
               ))
             : properties.map((property, index) => (
