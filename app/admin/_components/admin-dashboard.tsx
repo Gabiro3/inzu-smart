@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react"
 import Image from "next/image"
-import { PlusCircle, Trash2, Eye, Edit, Home, List, Building2, Info } from "lucide-react"
+import { PlusCircle, Trash2, Eye, Edit, Home, List, Building2, Info, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -63,8 +63,40 @@ export function AdminDashboard({ initialProperties, adminEmail, initialCompanyIn
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
+  const createFileInputRef = useRef<HTMLInputElement>(null)
+  const [createImagePreviews, setCreateImagePreviews] = useState<string[]>([])
+  const [createImageFiles, setCreateImageFiles] = useState<File[]>([])
+
+  const handleCreateFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || [])
+    if (files.length === 0) return
+
+    setCreateImageFiles((prev) => [...prev, ...files])
+    
+    // Create previews for new images
+    const newPreviews = files.map((file) => URL.createObjectURL(file))
+    setCreateImagePreviews((prev) => [...prev, ...newPreviews])
+  }
+
+  const removeCreateImage = (index: number) => {
+    // Revoke the object URL to free memory
+    URL.revokeObjectURL(createImagePreviews[index])
+    
+    setCreateImageFiles((prev) => prev.filter((_, i) => i !== index))
+    setCreateImagePreviews((prev) => prev.filter((_, i) => i !== index))
+    
+    // Reset file input if all images are removed
+    if (createFileInputRef.current && createImageFiles.length === 1) {
+      createFileInputRef.current.value = ""
+    }
+  }
 
   const handleSubmit = (formData: FormData) => {
+    // Add all image files to formData
+    createImageFiles.forEach((file) => {
+      formData.append("images", file)
+    })
+
     startTransition(async () => {
       const result = await createPropertyAction(formData)
       if (result?.error) {
@@ -75,6 +107,12 @@ export function AdminDashboard({ initialProperties, adminEmail, initialCompanyIn
       toast.success("Property created successfully")
       setProperties(result?.data ?? [])
       formRef.current?.reset()
+      
+      // Clean up image previews
+      createImagePreviews.forEach((url) => URL.revokeObjectURL(url))
+      setCreateImagePreviews([])
+      setCreateImageFiles([])
+      
       setViewMode("properties")
     })
   }
@@ -207,8 +245,47 @@ export function AdminDashboard({ initialProperties, adminEmail, initialCompanyIn
 
                 <div className="space-y-2">
                   <Label htmlFor="images">Property Images</Label>
-                  <Input id="images" name="images" type="file" multiple accept="image/*" required />
+                  <Input
+                    ref={createFileInputRef}
+                    id="images"
+                    name="images"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleCreateFileChange}
+                    required={createImageFiles.length === 0}
+                  />
                   <p className="text-sm text-gray-500">Upload at least one image. The first image becomes the thumbnail.</p>
+
+                  {/* Image Previews */}
+                  {createImagePreviews.length > 0 && (
+                    <div className="mt-4">
+                      <Label className="text-sm font-medium mb-2 block">Uploaded Images</Label>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {createImagePreviews.map((preview, index) => (
+                          <div key={`create-${index}`} className="relative group">
+                            <div className="aspect-square relative rounded-lg overflow-hidden border border-gray-200">
+                              <Image
+                                src={preview}
+                                alt={`Uploaded image ${index + 1}`}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => removeCreateImage(index)}
+                              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                              aria-label="Remove image"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <Button type="submit" className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700" disabled={isPending}>
@@ -384,7 +461,7 @@ export function AdminDashboard({ initialProperties, adminEmail, initialCompanyIn
       {/* Property Edit Dialog */}
       {selectedProperty && (
         <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-7xl max-w-[95vw] max-h-[90vh] overflow-y-auto">
             <DialogTitle className="sr-only">Edit property</DialogTitle>
             <PropertyEditForm
               property={selectedProperty!}

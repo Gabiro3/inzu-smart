@@ -3,6 +3,14 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 
+export function PropertyCardSkeleton() {
+  return (
+    <div className="relative overflow-hidden rounded-3xl bg-white shadow-lg animate-pulse">
+      <div className="aspect-[4/3] bg-gray-200"></div>
+    </div>
+  )
+}
+
 export function SplashScreen() {
   const [animate, setAnimate] = useState(false)
 
